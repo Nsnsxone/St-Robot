@@ -1,0 +1,527 @@
+
+<!DOCTYPE html>
+<html lang="en" translate="no">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="google" content="notranslate">
+
+  <meta name="viewport"
+        content="width=device-width,
+                 initial-scale=1.0,
+                 maximum-scale=1.0,
+                 user-scalable=no,
+                 viewport-fit=cover">
+
+  <title>ESP32 Motor</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      background:
+        radial-gradient(
+          circle at top,
+          #172033 0%,
+          #0b0e14 55%,
+          #07090d 100%
+        );
+
+      color: white;
+
+      margin: 0;
+
+      min-height: 100vh;
+
+      padding: 25px 16px 30px;
+
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-direction: column;
+    }
+
+
+    /* =========================
+       Header
+    ========================= */
+
+    .header {
+      width: 100%;
+      max-width: 430px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 25px;
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+
+      color: #00a3ff;
+
+      letter-spacing: -0.5px;
+    }
+
+    .car {
+      background:
+        linear-gradient(
+          135deg,
+          #ff9900,
+          #ff5500
+        );
+
+      padding: 6px 14px;
+
+      border-radius: 20px;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      box-shadow:
+        0 4px 15px
+        rgba(255, 102, 0, 0.3);
+    }
+
+
+    /* =========================
+       Main Card
+    ========================= */
+
+    .card {
+      width: 100%;
+      max-width: 430px;
+
+      background:
+        rgba(255, 255, 255, 0.06);
+
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.12);
+
+      border-radius: 28px;
+
+      padding: 22px;
+
+      box-shadow:
+        0 20px 60px
+        rgba(0, 0, 0, 0.35);
+
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+    }
+
+
+    /* =========================
+       Section
+    ========================= */
+
+    .section-title {
+      font-size: 13px;
+
+      color:
+        rgba(255, 255, 255, 0.55);
+
+      font-weight: 700;
+
+      text-transform: uppercase;
+
+      letter-spacing: 1px;
+
+      margin-bottom: 18px;
+    }
+
+
+    /* =========================
+       Settings
+    ========================= */
+
+    .setting {
+      margin-bottom: 18px;
+    }
+
+    .setting:last-child {
+      margin-bottom: 0;
+    }
+
+    .label-row {
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 8px;
+    }
+
+    .label {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .unit {
+      font-size: 11px;
+
+      color:
+        rgba(255, 255, 255, 0.4);
+    }
+
+
+    /* =========================
+       Input
+    ========================= */
+
+    input {
+      width: 100%;
+      height: 54px;
+
+      border-radius: 15px;
+
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.15);
+
+      background:
+        rgba(0, 0, 0, 0.25);
+
+      color: white;
+
+      font-size: 20px;
+      font-weight: 700;
+
+      text-align: center;
+
+      outline: none;
+
+      padding: 0 15px;
+
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: #00a3ff;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(0, 163, 255, 0.12);
+    }
+
+
+    /* =========================
+       Start Button
+    ========================= */
+
+    .start {
+      width: 100%;
+      height: 65px;
+
+      margin-top: 25px;
+
+      border: none;
+
+      border-radius: 18px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #00a3ff,
+          #0077ff
+        );
+
+      color: white;
+
+      font-size: 18px;
+      font-weight: 800;
+
+      letter-spacing: 0.3px;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 10px 30px
+        rgba(0, 163, 255, 0.28);
+
+      transition:
+        transform 0.1s,
+        box-shadow 0.1s;
+    }
+
+    .start:active {
+      transform: scale(0.97);
+
+      box-shadow:
+        0 4px 15px
+        rgba(0, 163, 255, 0.25);
+    }
+
+
+    /* =========================
+       Status
+    ========================= */
+
+    .status {
+      text-align: center;
+
+      margin-top: 16px;
+
+      font-size: 12px;
+
+      color:
+        rgba(255, 255, 255, 0.45);
+
+      min-height: 18px;
+    }
+
+    .status.ok {
+      color: #35e58a;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =========================
+       Header
+  ========================= -->
+
+  <div class="header">
+
+    <div class="title">
+      ESP32 Motor
+    </div>
+
+    <div class="car">
+      CAR 1
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       Settings Card
+  ========================= -->
+
+  <div class="card">
+
+    <div class="section-title">
+      Motor Settings
+    </div>
+
+
+    <!-- Motor Speed -->
+
+    <div class="setting">
+
+      <div class="label-row">
+
+        <div class="label">
+          Motor Speed
+        </div>
+
+        <div class="unit">
+          0 - 255
+        </div>
+
+      </div>
+
+      <input
+        id="motorSpeed"
+        type="number"
+        min="0"
+        max="255"
+        value="240"
+      >
+
+    </div>
+
+
+    <!-- Turn Speed -->
+
+    <div class="setting">
+
+      <div class="label-row">
+
+        <div class="label">
+          Turn Speed
+        </div>
+
+        <div class="unit">
+          0 - 255
+        </div>
+
+      </div>
+
+      <input
+        id="turnSpeed"
+        type="number"
+        min="0"
+        max="255"
+        value="25"
+      >
+
+    </div>
+
+
+    <!-- PWM Frequency -->
+
+    <div class="setting">
+
+      <div class="label-row">
+
+        <div class="label">
+          PWM Frequency
+        </div>
+
+        <div class="unit">
+          Hz
+        </div>
+
+      </div>
+
+      <input
+        id="pwmFreq"
+        type="number"
+        min="1"
+        max="100000"
+        value="5000"
+      >
+
+    </div>
+
+
+    <!-- PWM Resolution -->
+
+    <div class="setting">
+
+      <div class="label-row">
+
+        <div class="label">
+          PWM Resolution
+        </div>
+
+        <div class="unit">
+          bits
+        </div>
+
+      </div>
+
+      <input
+        id="pwmResolution"
+        type="number"
+        min="1"
+        max="16"
+        value="8"
+      >
+
+    </div>
+
+
+    <!-- Start -->
+
+    <button
+      class="start"
+      onclick="startTest()">
+
+      ▶ START
+
+    </button>
+
+
+    <!-- Status -->
+
+    <div
+      id="status"
+      class="status">
+
+      Ready
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       JavaScript
+  ========================= -->
+
+  <script>
+
+    function startTest() {
+
+      const motor =
+        document.getElementById("motorSpeed").value;
+
+      const turn =
+        document.getElementById("turnSpeed").value;
+
+      const freq =
+        document.getElementById("pwmFreq").value;
+
+      const resolution =
+        document.getElementById("pwmResolution").value;
+
+
+      const status =
+        document.getElementById("status");
+
+
+      /*
+       * จำลองการส่งค่า
+       */
+
+      console.log("Motor Speed:", motor);
+      console.log("Turn Speed:", turn);
+      console.log("PWM Frequency:", freq);
+      console.log("PWM Resolution:", resolution);
+
+
+      status.innerText =
+        "Settings sent • Ready to start";
+
+      status.className =
+        "status ok";
+
+
+      /*
+       * ตั้งเวลาให้กลับเป็น Ready
+       * โดยค่าที่กรอกจะไม่ถูกลบ
+       */
+
+      setTimeout(() => {
+
+        status.innerText =
+          "Ready";
+
+        status.className =
+          "status";
+
+      }, 2000);
+
+    }
+
+  </script>
+
+
+</body>
+
+</html>
+
