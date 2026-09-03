@@ -31,15 +31,15 @@ void s() {
 
 void a() {
   ledcWrite(motorLeft_1, 0);           
-  ledcWrite(motorLeft_2, motorSpeed-50+A);
+  ledcWrite(motorLeft_2, motorSpeed +A-15);
   ledcWrite(motorRight_1, 0);          
-  ledcWrite(motorRight_2, motorSpeed-50-B);
+  ledcWrite(motorRight_2, motorSpeed -B-15);
 }
 
 void d() {
-  ledcWrite(motorLeft_1, motorSpeed-50+A);  
+  ledcWrite(motorLeft_1, motorSpeed +A-15);  
   ledcWrite(motorLeft_2, 0);
-  ledcWrite(motorRight_1, motorSpeed-50-B); 
+  ledcWrite(motorRight_1, motorSpeed -B-15); 
   ledcWrite(motorRight_2, 0);
 }
 
@@ -61,30 +61,42 @@ void setup() {
   ledcAttach(motorLeft_2,  pwmFreq, pwmResolution);
   ledcAttach(motorRight_1, pwmFreq, pwmResolution);
   ledcAttach(motorRight_2, pwmFreq, pwmResolution);
-  Stop(); 
+  delay(500);
   w();
   delay(2000);
-  Stop(); 
-  delay(300);
-  d();
-  delay(900);
   Stop();
-  delay(300);  
-  w();
-  delay(1700);
-  Stop(); 
-  delay(300);
+  delay(500);
   d();
-  delay(900);
-  Stop();  
-  delay(300);
-  w();
-  delay(2000);
-  Stop(); 
-  delay(300);
+  delay(410);
+  Stop();
+  delay(500);
   a();
-  delay(900);
-  Stop();  
+  delay(410);
+  Stop();
+  // Stop(); 
+  // w();
+  // delay(2000);
+  // Stop(); 
+  // delay(300);
+  // d();
+  // delay(900);
+  // Stop();
+  // delay(300);  
+  // w();
+  // delay(1700);
+  // Stop(); 
+  // delay(300);
+  // d();
+  // delay(900);
+  // Stop();  
+  // delay(300);
+  // w();
+  // delay(2000);
+  // Stop(); 
+  // delay(300);
+  // a();
+  // delay(900);
+  // Stop();  
 
   //server.on("/", handleRoot);
   //server.on("/forward", []() { moveForward(); Serial.println("[Cmd] FORWARD"); server.send(200, "text/plain", "Forward"); });
